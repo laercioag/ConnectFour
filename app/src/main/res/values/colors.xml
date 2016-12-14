@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2c3e50</color>
+    <color name="colorPrimaryDark">#2c3e50</color>
+    <color name="colorAccent">#01579B</color>
+
+    <color name="playerOneDiscColor">#e74c3c</color>
+    <color name="playerTwoDiscColor">#f1c40f</color>
+    <color name="boardColor">#01579B</color>
+    <color name="backgroundColor">#2c3e50</color>
+    <color name="backgroundColorOpaque">#f12c3e50</color>
+
+    <color name="colorAccentOpaque">#d201579b</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="black_overlay">#66000000</color>
+</resources>

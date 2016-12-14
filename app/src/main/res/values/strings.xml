@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Connect Four</string>
+    <string name="title_activity_launcher">LauncherActivity</string>
+
+    <string name="start_game">Start</string>
+    <string name="new_game">New Game</string>
+    <string name="exit_game">Exit</string>
+    <string name="player_one">Player One</string>
+    <string name="player_two">Player Two</string>
+    <string name="player_one_won">Player One Won</string>
+    <string name="player_two_won">Player Two Won</string>
+    <string name="draw">Draw</string>
+    <string name="game_board">Game Board</string>
+    <string name="pause">Pause</string>
+    <string name="game_paused">Game Paused</string>
+    <string name="close">Close</string>
+    <string name="volume_on">Volume On</string>
+    <string name="volume_off">Volume Off</string>
+</resources>
