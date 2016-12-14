@@ -4,17 +4,23 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.Visibility;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lag.connectfour.util.Constants;
 import com.lag.connectfour.R;
+import com.lag.connectfour.util.Constants;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -32,6 +38,8 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
     ImageView boardImageView;
     @BindView(R.id.player_text_view)
     TextView playerTextView;
+    @BindView(R.id.pause_fab)
+    FloatingActionButton pauseFab;
     @BindView(R.id.fullscreen_menu)
     View menuView;
     @BindView(R.id.during_game_controls)
@@ -191,21 +199,28 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
         switchGameControlsView();
     }
 
-    @OnClick(R.id.pause_image_view)
+    @OnClick(R.id.pause_fab)
     public void showMenu() {
-//        int cx = menuView.getWidth() / 2;
-//        int cy = menuView.getHeight() / 2;
-//        float finalRadius = (float) Math.hypot(cx, cy);
-//        Animator anim = ViewAnimationUtils.createCircularReveal(menuView, cx, cy, 0, finalRadius);
-//        menuView.setVisibility(View.VISIBLE);
-//        anim.start();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            int cx = menuView.getWidth();
+            int cy = menuView.getHeight();
+            float finalRadius = (float) Math.hypot(cx, cy);
+
+            Animator anim = ViewAnimationUtils.createCircularReveal(menuView, cx, cy, 0, finalRadius);
+            menuView.setVisibility(View.VISIBLE);
+            anim.start();
+        } else{
+            Animation slideIn = AnimationUtils.loadAnimation(this, R.anim.slide_in_animation);
+            menuView.startAnimation(slideIn);
+        }
 
         menuView.setVisibility(View.VISIBLE);
-
     }
 
-    @OnClick(R.id.close_image_view)
+    @OnClick(R.id.close_fab)
     public void hideMenu() {
+        Animation slideOut = AnimationUtils.loadAnimation(this, R.anim.slide_out_animation);
+        menuView.startAnimation(slideOut);
         menuView.setVisibility(View.INVISIBLE);
     }
 
@@ -231,12 +246,8 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
 
     @Override
     public void onBackPressed() {
-        if(duringGameControlsView.getVisibility() == View.VISIBLE) {
-            if (menuView.getVisibility() == View.VISIBLE) {
-                hideMenu();
-            } else {
-                showMenu();
-            }
+        if (menuView.getVisibility() == View.VISIBLE) {
+            hideMenu();
         } else {
             super.onBackPressed();
         }

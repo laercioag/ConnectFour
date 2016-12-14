@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="0dp"
     android:padding="0dp"
     android:background="@color/backgroundColor"
@@ -54,28 +55,18 @@
             android:layout_height="match_parent"
             android:layout_below="@id/board_image_view">
 
-            <ImageView
-                android:id="@+id/pause_image_view"
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/pause_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
-                android:src="@drawable/ic_pause_white_36dp"
-                android:layout_margin="20dp"
-                android:clickable="true"
-                android:contentDescription="@string/pause"/>
-
-            <ImageView
-                android:id="@+id/volume_image_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                app:fabSize="normal"
+                app:rippleColor="@color/backgroundColor"
+                android:layout_margin="16dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
-                android:visibility="gone"
-                android:src="@drawable/ic_volume_off_white_36dp"
-                android:layout_margin="20dp"
-                android:clickable="true"
-                android:contentDescription="@string/volume_off"/>
+                android:src="@drawable/ic_pause_white_36dp"
+                />
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -116,19 +107,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="invisible"
-        android:background="@color/backgroundColor"
+        android:background="@color/colorAccent"
         android:clickable="true">
-
-        <ImageView
-            android:id="@+id/close_image_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_close_white_36dp"
-            android:clickable="true"
-            android:contentDescription="@string/close"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -168,6 +148,20 @@
                 android:text="@string/exit_game"/>
 
         </RelativeLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/close_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="normal"
+            app:backgroundTint="@color/white"
+            android:tint="@color/colorAccent"
+            app:rippleColor="@color/colorPrimary"
+            android:layout_margin="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_close_white_36dp"
+            />
 
     </RelativeLayout>
 
