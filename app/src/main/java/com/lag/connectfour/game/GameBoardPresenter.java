@@ -80,7 +80,7 @@ public class GameBoardPresenter implements IGameBoardPresenter, IGameListener {
                 view.highlightDisc(disc.getColumn(),disc.getRow());
             }
             if(player == Player.PLAYER_ONE) {
-                view.setWinnerPlayerOn();
+                view.setWinnerPlayerOne();
             } else {
                 view.setWinnerPlayerTwo();
             }

@@ -1,6 +1,7 @@
 package com.lag.connectfour.game;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.Visibility;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -61,6 +63,7 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
 
 
     private IGameBoardPresenter presenter;
+    private AnimatorSet animSetXY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +125,7 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
         ObjectAnimator animX = ObjectAnimator.ofFloat(disc, "x", discX, discX);
         animY.setInterpolator(new AccelerateInterpolator(1.0f));
         animY.setDuration(500);
-        AnimatorSet animSetXY = new AnimatorSet();
+        animSetXY = new AnimatorSet();
         animSetXY.playTogether(animY,animX);
         animSetXY.start();
     }
@@ -167,8 +170,14 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
     }
 
     @Override
-    public void highlightDisc(int column, int row) {
-        drawHighlightDisc(column, row, R.drawable.highlight_disc_drawable);
+    public void highlightDisc(final int column, final int row) {
+        animSetXY.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                drawHighlightDisc(column, row, R.drawable.highlight_disc_drawable);
+            }
+        });
     }
 
     @Override
@@ -182,21 +191,39 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
     }
 
     @Override
-    public void setWinnerPlayerOn() {
-        playerTextView.setText(playerOneWon);
-        switchGameControlsView();
+    public void setWinnerPlayerOne() {
+        animSetXY.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                playerTextView.setText(playerOneWon);
+                switchGameControlsView();
+            }
+        });
     }
 
     @Override
     public void setWinnerPlayerTwo() {
-        playerTextView.setText(playerTwoWon);
-        switchGameControlsView();
+        animSetXY.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                playerTextView.setText(playerTwoWon);
+                switchGameControlsView();
+            }
+        });
     }
 
     @Override
     public void setWinnerDraw() {
-        playerTextView.setText(draw);
-        switchGameControlsView();
+        animSetXY.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                playerTextView.setText(draw);
+                switchGameControlsView();
+            }
+        });
     }
 
     @OnClick(R.id.pause_fab)

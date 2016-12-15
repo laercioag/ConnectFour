@@ -12,7 +12,7 @@ public interface IGameBoardView {
 
     void setRoundPlayerTwo();
 
-    void setWinnerPlayerOn();
+    void setWinnerPlayerOne();
 
     void setWinnerPlayerTwo();
 
