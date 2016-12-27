@@ -7,10 +7,6 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.Slide;
-import android.transition.Transition;
-import android.transition.Visibility;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -42,6 +38,8 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
     TextView playerTextView;
     @BindView(R.id.pause_fab)
     FloatingActionButton pauseFab;
+    @BindView(R.id.close_fab)
+    FloatingActionButton closeFab;
     @BindView(R.id.fullscreen_menu)
     View menuView;
     @BindView(R.id.during_game_controls)
@@ -229,26 +227,45 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
     @OnClick(R.id.pause_fab)
     public void showMenu() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            int cx = menuView.getWidth();
-            int cy = menuView.getHeight();
+
+            int cx = menuView.getWidth() - (closeFab.getHeight() / 2) - (int) getResources().getDimension(R.dimen.fab_margin);
+            int cy = menuView.getHeight() - (closeFab.getHeight() / 2) - (int) getResources().getDimension(R.dimen.fab_margin);
             float finalRadius = (float) Math.hypot(cx, cy);
 
             Animator anim = ViewAnimationUtils.createCircularReveal(menuView, cx, cy, 0, finalRadius);
             menuView.setVisibility(View.VISIBLE);
             anim.start();
+
         } else{
             Animation slideIn = AnimationUtils.loadAnimation(this, R.anim.slide_in_animation);
             menuView.startAnimation(slideIn);
+            menuView.setVisibility(View.VISIBLE);
         }
-
-        menuView.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.close_fab)
     public void hideMenu() {
-        Animation slideOut = AnimationUtils.loadAnimation(this, R.anim.slide_out_animation);
-        menuView.startAnimation(slideOut);
-        menuView.setVisibility(View.INVISIBLE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+
+            int cx = menuView.getWidth() / 2;
+            int cy = menuView.getHeight() - (closeFab.getHeight() / 2) - (int) getResources().getDimension(R.dimen.fab_margin);
+            float initialRadius = (float) Math.hypot(cx, cy);
+
+            Animator anim = ViewAnimationUtils.createCircularReveal(menuView, cx, cy, initialRadius, 0);
+            anim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    menuView.setVisibility(View.INVISIBLE);
+                }
+            });
+            anim.start();
+
+        } else {
+            Animation slideOut = AnimationUtils.loadAnimation(this, R.anim.slide_out_animation);
+            menuView.startAnimation(slideOut);
+            menuView.setVisibility(View.INVISIBLE);
+        }
     }
 
     @OnClick({R.id.new_game_text_view, R.id.menu_new_game_text_view})

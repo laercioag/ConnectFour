@@ -3,6 +3,7 @@ package com.lag.connectfour.launcher;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.TransitionInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -38,7 +39,7 @@ public class LauncherActivity extends AppCompatActivity {
         onWindowFocusChanged(true);
     }
 
-    @OnClick(R.id.start_image_view)
+    @OnClick(R.id.start_text_view)
     public void launchGame() {
         Intent intent = new Intent(this, GameBoardActivity.class);
         startActivity(intent);

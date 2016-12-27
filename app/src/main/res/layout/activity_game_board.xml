@@ -60,11 +60,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:fabSize="normal"
-                app:rippleColor="@color/backgroundColor"
-                android:layout_margin="16dp"
+                android:layout_margin="@dimen/fab_margin"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/ic_pause_white_36dp"
+                app:backgroundTint="@color/colorAccent"
+                android:tint="@color/white"
                 />
 
         </RelativeLayout>
@@ -87,17 +88,6 @@
                 android:textSize="30sp"
                 android:text="@string/new_game"/>
 
-            <!--<com.lag.connectfour.util.BungeeTextView-->
-                <!--android:id="@+id/home_screen_text_view"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_margin="10dp"-->
-                <!--android:layout_below="@id/new_game_text_view"-->
-                <!--android:gravity="center"-->
-                <!--android:textColor="@color/white"-->
-                <!--android:textSize="30sp"-->
-                <!--android:text="@string/home_screen"/>-->
-
         </RelativeLayout>
 
     </RelativeLayout>
@@ -117,9 +107,10 @@
 
             <com.lag.connectfour.util.BungeeTextView
                 android:id="@+id/menu_text_view"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="30dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="50dp"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="40sp"
@@ -127,10 +118,10 @@
 
             <com.lag.connectfour.util.BungeeTextView
                 android:id="@+id/menu_new_game_text_view"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/menu_text_view"
-                android:layout_margin="5dp"
+                android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="30sp"
@@ -138,10 +129,10 @@
 
             <com.lag.connectfour.util.BungeeTextView
                 android:id="@+id/menu_exit_game_text_view"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/menu_new_game_text_view"
-                android:layout_margin="5dp"
+                android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="30sp"
@@ -156,8 +147,7 @@
             app:fabSize="normal"
             app:backgroundTint="@color/white"
             android:tint="@color/colorAccent"
-            app:rippleColor="@color/colorPrimary"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/fab_margin"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:src="@drawable/ic_close_white_36dp"
