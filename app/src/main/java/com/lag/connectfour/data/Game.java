@@ -1,7 +1,5 @@
 package com.lag.connectfour.data;
 
-import com.lag.connectfour.data.Disc;
-import com.lag.connectfour.data.Player;
 import com.lag.connectfour.game.IGameListener;
 
 import java.util.ArrayList;

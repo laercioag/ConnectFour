@@ -11,28 +11,23 @@ public class GameBoardPresenter implements IGameBoardPresenter, IGameListener {
     private IGameBoardView view;
     private Game game;
 
-    public GameBoardPresenter(IGameBoardView view) {
-        this.view = view;
+    public GameBoardPresenter() {
         newGame();
     }
 
     @Override
-    public void onCreate() {
-
+    public void onViewAttached(IGameBoardView view) {
+        this.view = view;
     }
 
     @Override
-    public void onPause() {
-
+    public void onViewDetached() {
+        //Not sure
+        this.view = null;
     }
 
     @Override
-    public void onResume() {
-
-    }
-
-    @Override
-    public void onDestroy() {
+    public void onDestroyed() {
         this.view = null;
         this.game = null;
     }

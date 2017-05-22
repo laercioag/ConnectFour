@@ -6,6 +6,8 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,7 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
 
-public class GameBoardActivity extends AppCompatActivity implements IGameBoardView {
+public class GameBoardActivity extends AppCompatActivity implements IGameBoardView, LoaderManager.LoaderCallbacks<IGameBoardPresenter> {
 
     @BindView(R.id.fullscreen_content)
     View contentView;
@@ -59,7 +61,7 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
     @BindString(R.string.draw)
     String draw;
 
-
+    private static final int LOADER_ID = 101;
     private IGameBoardPresenter presenter;
     private AnimatorSet animSetXY;
 
@@ -68,8 +70,7 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_board);
         ButterKnife.bind(this);
-        presenter = new GameBoardPresenter(this);
-        presenter.onCreate();
+        getSupportLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
     @OnTouch(R.id.board_image_view)
@@ -270,7 +271,8 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
 
     @OnClick({R.id.new_game_text_view, R.id.menu_new_game_text_view})
     public void newGame() {
-        this.recreate();
+        finish();
+        startActivity(getIntent());
     }
 
     public void switchGameControlsView() {
@@ -297,23 +299,38 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
         }
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.onViewAttached(this);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.onResume();
         onWindowFocusChanged(true);
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        presenter.onPause();
+    protected void onStop() {
+        presenter.onViewDetached();
+        super.onStop();
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        presenter.onDestroy();
+    public Loader<IGameBoardPresenter> onCreateLoader(int id, Bundle args) {
+        return new PresenterLoader(this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<IGameBoardPresenter> loader, IGameBoardPresenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void onLoaderReset(Loader<IGameBoardPresenter> loader) {
+        this.presenter = null;
     }
 
     @Override
