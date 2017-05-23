@@ -9,4 +9,6 @@ public interface IGameBoardPresenter{
     void onDestroyed();
 
     void onPlayerMove(int col);
+
+    void redraw();
 }

@@ -1,5 +1,7 @@
 package com.lag.connectfour.game;
 
+import android.util.Log;
+
 import com.lag.connectfour.data.Disc;
 import com.lag.connectfour.data.Game;
 import com.lag.connectfour.data.Player;
@@ -18,6 +20,7 @@ public class GameBoardPresenter implements IGameBoardPresenter, IGameListener {
     @Override
     public void onViewAttached(IGameBoardView view) {
         this.view = view;
+        redraw();
     }
 
     @Override
@@ -81,4 +84,22 @@ public class GameBoardPresenter implements IGameBoardPresenter, IGameListener {
             }
         }
     }
+
+    // This method probably brakes the concept of MVP
+    @Override
+    public void redraw() {
+        Log.e("Presenter.redraw: ", "Redraw function called");
+        for (int row = 1; row <= 6; row++) {
+            for (int col = 1; col <= 7; col++) {
+                if(game.board[row][col]!=null) {
+                    if (game.board[row][col].getPlayer() == Player.PLAYER_ONE) {
+                        view.redrawDiscPlayerOne(col, row);
+                    } else if (game.board[row][col].getPlayer() == Player.PLAYER_TWO) {
+                        view.redrawDiscPlayerTwo(col, row);
+                    }
+                }
+            }
+        }
+    }
+
 }

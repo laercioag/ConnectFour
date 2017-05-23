@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -62,6 +63,11 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
     String draw;
 
     private static final int LOADER_ID = 101;
+    private static final String MENU_VIEW_VISIBILITY = "menuViewVisibility";
+    private static final String DURING_GAME_CONTROLS_VIEW_VISIBILITY = "duringGameControlsViewVisibility";
+    private static final String AFTER_GAME_CONTROLS_VIEW_VISIBILITY = "afterGameControlsViewVisibility";
+    private static final String PLAYER_TEXT_VIEW = "playerTextView";
+
     private IGameBoardPresenter presenter;
     private AnimatorSet animSetXY;
 
@@ -91,6 +97,36 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
             }
         }
         return false;
+    }
+
+    public void drawDisc(int column, int row, int drawable) {
+
+        int height = boardImageView.getHeight();
+        int width = boardImageView.getWidth();
+        int top = boardImageView.getTop();
+
+        row = Constants.ROWS - row + 1;
+
+        float wStart = ((width / Constants.BOARD_WIDTH) * (Constants.BOARD_PADDING + Constants.SLOT_MARGIN))
+                + ((width / (Constants.BOARD_WIDTH / Constants.SLOT_SIZE)) * Constants.ROWS * (column - 1));
+        float wEnd = ((width / Constants.BOARD_WIDTH) * (Constants.BOARD_PADDING + Constants.SLOT_MARGIN))
+                + ((width / (Constants.BOARD_WIDTH / Constants.SLOT_SIZE)) * Constants.ROWS * (column));
+        float hStart = ((height / Constants.BOARD_HEIGHT) * Constants.SLOT_MARGIN)
+                + ((height / (Constants.BOARD_HEIGHT / Constants.SLOT_SIZE)) * Constants.ROWS * (row - 1));
+        float hEnd = ((height / Constants.BOARD_HEIGHT) * Constants.SLOT_MARGIN)
+                + ((height / (Constants.BOARD_HEIGHT / Constants.SLOT_SIZE)) * Constants.ROWS * (row));
+
+        int discSize = Math.round((width / (Constants.BOARD_WIDTH / Constants.SLOT_SIZE)) *  5);
+        float discX = (wStart + ((wEnd - wStart) / 2) - (discSize / 2));
+        float discY = (hStart + ((hEnd - hStart) / 2) - (discSize / 2));
+
+        ImageView disc = new ImageView(this);
+        disc.setId(View.generateViewId());
+        disc.setImageResource(drawable);
+        disc.setX(discX);
+        disc.setY(top + discY);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(discSize,discSize);
+        discHolderLayout.addView(disc,params);
     }
 
     public void drawAndAnimateDisc(int column, int row, int drawable) {
@@ -166,6 +202,16 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
     @Override
     public void drawDiscPlayerTwo(int column, int row) {
         drawAndAnimateDisc(column, row, R.drawable.player_two_disc_drawable);
+    }
+
+    @Override
+    public void redrawDiscPlayerOne(int column, int row) {
+        drawDisc(column, row, R.drawable.player_one_disc_drawable);
+    }
+
+    @Override
+    public void redrawDiscPlayerTwo(int column, int row) {
+        drawDisc(column, row, R.drawable.player_two_disc_drawable);
     }
 
     @Override
@@ -277,11 +323,11 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
 
     public void switchGameControlsView() {
         if(duringGameControlsView.getVisibility() == View.VISIBLE) {
-            duringGameControlsView.setVisibility(View.GONE);
+            duringGameControlsView.setVisibility(View.INVISIBLE);
             afterGameControlsView.setVisibility(View.VISIBLE);
         } else {
             duringGameControlsView.setVisibility(View.VISIBLE);
-            afterGameControlsView.setVisibility(View.GONE);
+            afterGameControlsView.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -316,6 +362,52 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
     protected void onStop() {
         presenter.onViewDetached();
         super.onStop();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(menuView.getVisibility() == View.VISIBLE) {
+            outState.putBoolean(MENU_VIEW_VISIBILITY, true);
+        } else {
+            outState.putBoolean(MENU_VIEW_VISIBILITY, false);
+        }
+
+        if(duringGameControlsView.getVisibility() == View.VISIBLE) {
+            outState.putBoolean(DURING_GAME_CONTROLS_VIEW_VISIBILITY, true);
+        } else {
+            outState.putBoolean(DURING_GAME_CONTROLS_VIEW_VISIBILITY, false);
+        }
+
+        if(afterGameControlsView.getVisibility() == View.VISIBLE) {
+            outState.putBoolean(AFTER_GAME_CONTROLS_VIEW_VISIBILITY, true);
+        } else {
+            outState.putBoolean(AFTER_GAME_CONTROLS_VIEW_VISIBILITY, false);
+        }
+        outState.putCharSequence(PLAYER_TEXT_VIEW, playerTextView.getText());
+        Log.e("onSaveInstanceState:", " called");
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState.getBoolean(MENU_VIEW_VISIBILITY)) {
+            menuView.setVisibility(View.VISIBLE);
+        } else {
+            menuView.setVisibility(View.INVISIBLE);
+        }
+        if(savedInstanceState.getBoolean(DURING_GAME_CONTROLS_VIEW_VISIBILITY)) {
+            duringGameControlsView.setVisibility(View.VISIBLE);
+        } else {
+            duringGameControlsView.setVisibility(View.INVISIBLE);
+        }
+        if(savedInstanceState.getBoolean(AFTER_GAME_CONTROLS_VIEW_VISIBILITY)) {
+            afterGameControlsView.setVisibility(View.VISIBLE);
+        } else {
+            afterGameControlsView.setVisibility(View.INVISIBLE);
+        }
+        playerTextView.setText(savedInstanceState.getCharSequence(PLAYER_TEXT_VIEW));
+        Log.e("onRestoreInstanceState:", " called");
     }
 
     @Override

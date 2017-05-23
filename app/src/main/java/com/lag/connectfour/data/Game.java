@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Game {
 
-    private Disc[][] board;
+    public Disc[][] board;
     private Player roundPlayer;
     private Player winnerPlayer;
     private List<Disc> winnerDiscs;
