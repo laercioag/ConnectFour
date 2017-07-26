@@ -1,6 +1,6 @@
 # ConnectFour
 Simple Connect Four Android game app using MVP.
-
+Download the APK <a href="https://github.com/laercioag/ConnectFour/releases/">here</a>.
 
 <img src="https://s15.postimg.org/btd5io42j/Phone_Screenshot_1.png" width="360">
 <img src="https://s30.postimg.org/3r3wk25gh/Phone_Screenshot_2.png" width="360">
