@@ -20,6 +20,7 @@ public class GameBoardPresenter implements IGameBoardPresenter, IGameListener {
     @Override
     public void onViewAttached(IGameBoardView view) {
         this.view = view;
+        setRoundPlayer(game.getRoundPlayer());
         redraw();
     }
 
@@ -57,7 +58,7 @@ public class GameBoardPresenter implements IGameBoardPresenter, IGameListener {
     }
 
     @Override
-    public void switchPlayer(Player player) {
+    public void setRoundPlayer(Player player) {
         if(view != null) {
             if(player == Player.PLAYER_ONE) {
                 view.setRoundPlayerOne();
