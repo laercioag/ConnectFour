@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Connect Four</string>
-    <string name="title_activity_launcher">LauncherActivity</string>
+    <string name="title_activity_launcher" translatable="false">LauncherActivity</string>
 
     <string name="start_game">Start</string>
     <string name="new_game">New Game</string>

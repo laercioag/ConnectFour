@@ -1,5 +1,7 @@
 package com.lag.connectfour.game;
 
+import android.util.Log;
+
 import com.lag.connectfour.data.Disc;
 import com.lag.connectfour.data.Game;
 import com.lag.connectfour.data.Player;
@@ -11,28 +13,25 @@ public class GameBoardPresenter implements IGameBoardPresenter, IGameListener {
     private IGameBoardView view;
     private Game game;
 
-    public GameBoardPresenter(IGameBoardView view) {
-        this.view = view;
+    public GameBoardPresenter() {
         newGame();
     }
 
     @Override
-    public void onCreate() {
-
+    public void onViewAttached(IGameBoardView view) {
+        this.view = view;
+        setRoundPlayer(game.getRoundPlayer());
+        redraw();
     }
 
     @Override
-    public void onPause() {
-
+    public void onViewDetached() {
+        //Not sure
+        this.view = null;
     }
 
     @Override
-    public void onResume() {
-
-    }
-
-    @Override
-    public void onDestroy() {
+    public void onDestroyed() {
         this.view = null;
         this.game = null;
     }
@@ -59,7 +58,7 @@ public class GameBoardPresenter implements IGameBoardPresenter, IGameListener {
     }
 
     @Override
-    public void switchPlayer(Player player) {
+    public void setRoundPlayer(Player player) {
         if(view != null) {
             if(player == Player.PLAYER_ONE) {
                 view.setRoundPlayerOne();
@@ -86,4 +85,22 @@ public class GameBoardPresenter implements IGameBoardPresenter, IGameListener {
             }
         }
     }
+
+    // This method probably brakes the concept of MVP
+    @Override
+    public void redraw() {
+        Log.e("Presenter.redraw: ", "Redraw function called");
+        for (int row = 1; row <= 6; row++) {
+            for (int col = 1; col <= 7; col++) {
+                if(game.board[row][col]!=null) {
+                    if (game.board[row][col].getPlayer() == Player.PLAYER_ONE) {
+                        view.redrawDiscPlayerOne(col, row);
+                    } else if (game.board[row][col].getPlayer() == Player.PLAYER_TWO) {
+                        view.redrawDiscPlayerTwo(col, row);
+                    }
+                }
+            }
+        }
+    }
+
 }

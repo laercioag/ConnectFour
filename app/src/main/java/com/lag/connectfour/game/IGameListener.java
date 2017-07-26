@@ -11,7 +11,7 @@ public interface IGameListener {
 
     void playerMove(Disc disc);
 
-    void switchPlayer(Player player);
+    void setRoundPlayer(Player player);
 
     void gameFinished(Player player, List<Disc> winnerDiscs);
 

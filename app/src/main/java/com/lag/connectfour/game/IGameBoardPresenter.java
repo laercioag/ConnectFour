@@ -1,16 +1,14 @@
 package com.lag.connectfour.game;
 
-import java.util.List;
+public interface IGameBoardPresenter{
 
-public interface IGameBoardPresenter {
+    void onViewAttached(IGameBoardView view);
 
-    void onCreate();
+    void onViewDetached();
 
-    void onPause();
-
-    void onResume();
-
-    void onDestroy();
+    void onDestroyed();
 
     void onPlayerMove(int col);
+
+    void redraw();
 }

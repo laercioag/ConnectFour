@@ -1,7 +1,5 @@
 package com.lag.connectfour.data;
 
-import com.lag.connectfour.data.Disc;
-import com.lag.connectfour.data.Player;
 import com.lag.connectfour.game.IGameListener;
 
 import java.util.ArrayList;
@@ -9,7 +7,7 @@ import java.util.List;
 
 public class Game {
 
-    private Disc[][] board;
+    public Disc[][] board;
     private Player roundPlayer;
     private Player winnerPlayer;
     private List<Disc> winnerDiscs;
@@ -28,7 +26,6 @@ public class Game {
         winnerPlayer = null;
         winnerDiscs = new ArrayList<>();
         isFinished = false;
-        notifySwitchPlayer();
     }
 
     public void playerMove(int col) {
@@ -54,11 +51,11 @@ public class Game {
 
     private void switchPlayer() {
         if(roundPlayer == Player.PLAYER_ONE) {
-            roundPlayer = Player.PLAYER_TWO;
+            setRoundPlayer(Player.PLAYER_TWO);
         } else {
-            roundPlayer = Player.PLAYER_ONE;
+            setRoundPlayer(Player.PLAYER_ONE);
         }
-        notifySwitchPlayer();
+        notifyRoundPlayer();
     }
 
     private boolean isBoardFull() {
@@ -127,6 +124,14 @@ public class Game {
         return false;
     }
 
+    public Player getRoundPlayer() {
+        return roundPlayer;
+    }
+
+    public void setRoundPlayer(Player roundPlayer) {
+        this.roundPlayer = roundPlayer;
+    }
+
     private Player getWinnerPlayer() {
         return winnerPlayer;
     }
@@ -150,8 +155,8 @@ public class Game {
         listener.playerMove(disc);
     }
 
-    private void notifySwitchPlayer() {
-        listener.switchPlayer(roundPlayer);
+    private void notifyRoundPlayer() {
+        listener.setRoundPlayer(roundPlayer);
     }
 
     private void notifyGameFinished() {

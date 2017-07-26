@@ -1,6 +1,5 @@
 package com.lag.connectfour.data;
 
-
 public class Disc {
 
     private int column;

@@ -6,6 +6,10 @@ public interface IGameBoardView {
 
     void drawDiscPlayerTwo(int column, int row);
 
+    void redrawDiscPlayerOne(int column, int row);
+
+    void redrawDiscPlayerTwo(int column, int row);
+
     void highlightDisc(int column, int row);
 
     void setRoundPlayerOne();
