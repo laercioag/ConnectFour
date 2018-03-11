@@ -3,12 +3,13 @@ package com.lag.connectfour.launcher;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.lag.connectfour.R;
 import com.lag.connectfour.game.GameBoardActivity;
 
@@ -26,11 +27,15 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppThemeLight);
         setContentView(R.layout.activity_launcher);
         ButterKnife.bind(this);
 
         Animation pulse = AnimationUtils.loadAnimation(this, R.anim.pulse_animation);
         startImageView.startAnimation(pulse);
+
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d("TOKEN", "Refreshed token: " + refreshedToken);
     }
 
     @Override
@@ -55,6 +60,7 @@ public class LauncherActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);}
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
     }
 }

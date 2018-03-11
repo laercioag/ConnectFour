@@ -4,12 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -50,7 +52,6 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
     @BindView(R.id.after_game_controls)
     View afterGameControlsView;
 
-
     @BindString(R.string.player_one)
     String playerOne;
     @BindString(R.string.player_two)
@@ -76,16 +77,15 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_board);
         ButterKnife.bind(this);
-        getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+        getSupportLoaderManager().initLoader(LOADER_ID, null, this).forceLoad();
     }
 
     @OnTouch(R.id.board_image_view)
     public boolean onPlayerMove(View view, MotionEvent motionEvent) {
-
         int width = view.getWidth();
         float touchX = motionEvent.getX();
 
-        for(int col = 1; col<= Constants.COLUMNS; col++) {
+        for (int col = 1; col <= Constants.COLUMNS; col++) {
 
             float wStart = ((width / Constants.BOARD_WIDTH) * (Constants.BOARD_PADDING + Constants.SLOT_MARGIN))
                     + ((width / (Constants.BOARD_WIDTH / Constants.SLOT_SIZE)) * Constants.ROWS * (col - 1));
@@ -116,7 +116,7 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
         float hEnd = ((height / Constants.BOARD_HEIGHT) * Constants.SLOT_MARGIN)
                 + ((height / (Constants.BOARD_HEIGHT / Constants.SLOT_SIZE)) * Constants.ROWS * (row));
 
-        int discSize = Math.round((width / (Constants.BOARD_WIDTH / Constants.SLOT_SIZE)) *  5);
+        int discSize = Math.round((width / (Constants.BOARD_WIDTH / Constants.SLOT_SIZE)) * 5);
         float discX = (wStart + ((wEnd - wStart) / 2) - (discSize / 2));
         float discY = (hStart + ((hEnd - hStart) / 2) - (discSize / 2));
 
@@ -125,11 +125,11 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
         disc.setImageResource(drawable);
         disc.setX(discX);
         disc.setY(top + discY);
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(discSize,discSize);
-        discHolderLayout.addView(disc,params);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(discSize, discSize);
+        discHolderLayout.addView(disc, params);
     }
 
-    public void drawAndAnimateDisc(int column, int row, int drawable) {
+    public void drawAndAnimateDisc(int column, int row, final int drawable) {
 
         int height = boardImageView.getHeight();
         int width = boardImageView.getWidth();
@@ -146,23 +146,38 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
         float hEnd = ((height / Constants.BOARD_HEIGHT) * Constants.SLOT_MARGIN)
                 + ((height / (Constants.BOARD_HEIGHT / Constants.SLOT_SIZE)) * Constants.ROWS * (row));
 
-        int discSize = Math.round((width / (Constants.BOARD_WIDTH / Constants.SLOT_SIZE)) *  5);
+        int discSize = Math.round((width / (Constants.BOARD_WIDTH / Constants.SLOT_SIZE)) * 5);
         float discX = (wStart + ((wEnd - wStart) / 2) - (discSize / 2));
         float discY = (hStart + ((hEnd - hStart) / 2) - (discSize / 2));
 
         ImageView disc = new ImageView(this);
         disc.setId(View.generateViewId());
         disc.setImageResource(drawable);
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(discSize,discSize);
-        discHolderLayout.addView(disc,params);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(discSize, discSize);
+        discHolderLayout.addView(disc, params);
 
         ObjectAnimator animY = ObjectAnimator.ofFloat(disc, "y", top - discSize, top + discY);
         ObjectAnimator animX = ObjectAnimator.ofFloat(disc, "x", discX, discX);
         animY.setInterpolator(new AccelerateInterpolator(1.0f));
         animY.setDuration(500);
         animSetXY = new AnimatorSet();
-        animSetXY.playTogether(animY,animX);
+        animSetXY.playTogether(animY, animX);
         animSetXY.start();
+        animSetXY.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                if(drawable == R.drawable.player_one_disc_drawable) {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(() -> setRequestedOrientation(ActivityInfo
+                            .SCREEN_ORIENTATION_REVERSE_PORTRAIT), 500);
+                } else {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(() -> setRequestedOrientation(ActivityInfo
+                            .SCREEN_ORIENTATION_PORTRAIT), 500);
+                }
+            }
+        });
     }
 
     public void drawHighlightDisc(int column, int row, int drawable) {
@@ -181,7 +196,7 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
         float hEnd = ((height / Constants.BOARD_HEIGHT) * Constants.SLOT_MARGIN)
                 + ((height / (Constants.BOARD_HEIGHT / Constants.SLOT_SIZE)) * Constants.ROWS * (row));
 
-        int discSize = Math.round((width / (Constants.BOARD_WIDTH / Constants.SLOT_SIZE)) *  5);
+        int discSize = Math.round((width / (Constants.BOARD_WIDTH / Constants.SLOT_SIZE)) * 5);
         float discX = (wStart + ((wEnd - wStart) / 2) - (discSize / 2));
         float discY = (hStart + ((hEnd - hStart) / 2) - (discSize / 2));
 
@@ -190,8 +205,8 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
         disc.setImageResource(drawable);
         disc.setX(discX);
         disc.setY(top + discY);
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(discSize,discSize);
-        discHolderLayout.addView(disc,params);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(discSize, discSize);
+        discHolderLayout.addView(disc, params);
     }
 
     @Override
@@ -227,20 +242,41 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
 
     @Override
     public void setRoundPlayerOne() {
-        playerTextView.setText(playerOne);
+        setRoudPlayer(playerOne);
     }
 
     @Override
     public void setRoundPlayerTwo() {
-        playerTextView.setText(playerTwo);
+        setRoudPlayer(playerTwo);
+    }
+
+    private void setRoudPlayer(final String player) {
+        if(animSetXY != null) {
+            if (animSetXY.isRunning()) {
+                animSetXY.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        final Handler handler = new Handler();
+                        handler.postDelayed(() -> playerTextView.setText(player), 500);
+                    }
+                });
+            } else{
+                playerTextView.setText(player);
+            }
+        } else {
+            playerTextView.setText(player);
+        }
     }
 
     @Override
     public void setWinnerPlayerOne() {
+        animSetXY.removeAllListeners();
         animSetXY.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 playerTextView.setText(playerOneWon);
                 switchGameControlsView();
             }
@@ -249,10 +285,12 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
 
     @Override
     public void setWinnerPlayerTwo() {
+        animSetXY.removeAllListeners();
         animSetXY.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
                 playerTextView.setText(playerTwoWon);
                 switchGameControlsView();
             }
@@ -283,7 +321,7 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
             menuView.setVisibility(View.VISIBLE);
             anim.start();
 
-        } else{
+        } else {
             Animation slideIn = AnimationUtils.loadAnimation(this, R.anim.slide_in_animation);
             menuView.startAnimation(slideIn);
             menuView.setVisibility(View.VISIBLE);
@@ -322,7 +360,7 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
     }
 
     public void switchGameControlsView() {
-        if(duringGameControlsView.getVisibility() == View.VISIBLE) {
+        if (duringGameControlsView.getVisibility() == View.VISIBLE) {
             duringGameControlsView.setVisibility(View.INVISIBLE);
             afterGameControlsView.setVisibility(View.VISIBLE);
         } else {
@@ -345,16 +383,15 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
         }
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
-        presenter.onViewAttached(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        presenter.onViewAttached(this);
         onWindowFocusChanged(true);
     }
 
@@ -367,61 +404,60 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if(menuView.getVisibility() == View.VISIBLE) {
+        if (menuView.getVisibility() == View.VISIBLE) {
             outState.putBoolean(MENU_VIEW_VISIBILITY, true);
         } else {
             outState.putBoolean(MENU_VIEW_VISIBILITY, false);
         }
 
-        if(duringGameControlsView.getVisibility() == View.VISIBLE) {
+        if (duringGameControlsView.getVisibility() == View.VISIBLE) {
             outState.putBoolean(DURING_GAME_CONTROLS_VIEW_VISIBILITY, true);
         } else {
             outState.putBoolean(DURING_GAME_CONTROLS_VIEW_VISIBILITY, false);
         }
 
-        if(afterGameControlsView.getVisibility() == View.VISIBLE) {
+        if (afterGameControlsView.getVisibility() == View.VISIBLE) {
             outState.putBoolean(AFTER_GAME_CONTROLS_VIEW_VISIBILITY, true);
         } else {
             outState.putBoolean(AFTER_GAME_CONTROLS_VIEW_VISIBILITY, false);
         }
         outState.putCharSequence(PLAYER_TEXT_VIEW, playerTextView.getText());
-        Log.e("onSaveInstanceState:", " called");
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if(savedInstanceState.getBoolean(MENU_VIEW_VISIBILITY)) {
+        if (savedInstanceState.getBoolean(MENU_VIEW_VISIBILITY)) {
             menuView.setVisibility(View.VISIBLE);
         } else {
             menuView.setVisibility(View.INVISIBLE);
         }
-        if(savedInstanceState.getBoolean(DURING_GAME_CONTROLS_VIEW_VISIBILITY)) {
+        if (savedInstanceState.getBoolean(DURING_GAME_CONTROLS_VIEW_VISIBILITY)) {
             duringGameControlsView.setVisibility(View.VISIBLE);
         } else {
             duringGameControlsView.setVisibility(View.INVISIBLE);
         }
-        if(savedInstanceState.getBoolean(AFTER_GAME_CONTROLS_VIEW_VISIBILITY)) {
+        if (savedInstanceState.getBoolean(AFTER_GAME_CONTROLS_VIEW_VISIBILITY)) {
             afterGameControlsView.setVisibility(View.VISIBLE);
         } else {
             afterGameControlsView.setVisibility(View.INVISIBLE);
         }
         playerTextView.setText(savedInstanceState.getCharSequence(PLAYER_TEXT_VIEW));
-        Log.e("onRestoreInstanceState:", " called");
     }
 
+    @NonNull
     @Override
     public Loader<IGameBoardPresenter> onCreateLoader(int id, Bundle args) {
-        return new PresenterLoader(this);
+        return new PresenterLoader(getApplicationContext());
     }
 
     @Override
-    public void onLoadFinished(Loader<IGameBoardPresenter> loader, IGameBoardPresenter presenter) {
+    public void onLoadFinished(@NonNull Loader<IGameBoardPresenter> loader, IGameBoardPresenter presenter) {
         this.presenter = presenter;
     }
 
     @Override
-    public void onLoaderReset(Loader<IGameBoardPresenter> loader) {
+    public void onLoaderReset(@NonNull Loader<IGameBoardPresenter> loader) {
         this.presenter = null;
     }
 
@@ -435,7 +471,8 @@ public class GameBoardActivity extends AppCompatActivity implements IGameBoardVi
                             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);}
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
     }
 
 }

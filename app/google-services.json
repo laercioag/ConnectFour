@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "1079156533189",
+    "firebase_url": "https://connect-four-872c1.firebaseio.com",
+    "project_id": "connect-four-872c1",
+    "storage_bucket": "connect-four-872c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079156533189:android:a9e5eb9f43bdf0c6",
+        "android_client_info": {
+          "package_name": "com.lag.connectfour"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079156533189-1m2jd1t005vrh8mkb4g56rnk9iis1l7o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lag.connectfour",
+            "certificate_hash": "471226ff596ebe725cb4fe798b241557910fcdfd"
+          }
+        },
+        {
+          "client_id": "1079156533189-vcqlmq7toaebfq1eaogmclkgma4ki24a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXN0h39YykAa8fXIh0sdKILNCczmCrzVs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1079156533189-2rhidghjk8an49ab77kq2dd0van6ntm6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.lag.connectfour"
+              }
+            },
+            {
+              "client_id": "1079156533189-vcqlmq7toaebfq1eaogmclkgma4ki24a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

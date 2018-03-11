@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Conecta 4</string>
+    <string name="start_game">Iniciar</string>
+    <string name="new_game">Nuevo Juego</string>
+    <string name="exit_game">Salir Del Juego</string>
+    <string name="player_one">Jugador Uno</string>
+    <string name="player_two">Jugador Dos</string>
+    <string name="player_two_won">Jugador Dos Ganado</string>
+    <string name="player_one_won">Jugador Uno Ganado</string>
+    <string name="draw">Empate</string>
+    <string name="game_board">Tablero De Juego</string>
+    <string name="pause">Pausar</string>
+    <string name="game_paused">Juego Pausado</string>
+    <string name="close">Cerrar</string>
+    <string name="volume_on">Volumen Encendido</string>
+    <string name="volume_off">Volumen Apagado</string>
+</resources>

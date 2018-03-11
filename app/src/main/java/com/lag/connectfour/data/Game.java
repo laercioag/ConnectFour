@@ -29,14 +29,14 @@ public class Game {
     }
 
     public void playerMove(int col) {
-        if(!isFinished) {
+        if (!isFinished) {
             if (col >= 1 && col <= 7) {
                 for (int row = 1; row <= 6; row++) {
                     if (board[row][col] == null) {
                         board[row][col] = new Disc(row, col, roundPlayer);
                         notifyPlayerMove(board[row][col]);
 
-                        if(hasWinner() || isBoardFull()) {
+                        if (hasWinner() || isBoardFull()) {
                             isFinished = true;
                             notifyGameFinished();
                         } else {
@@ -50,7 +50,7 @@ public class Game {
     }
 
     private void switchPlayer() {
-        if(roundPlayer == Player.PLAYER_ONE) {
+        if (roundPlayer == Player.PLAYER_ONE) {
             setRoundPlayer(Player.PLAYER_TWO);
         } else {
             setRoundPlayer(Player.PLAYER_ONE);
@@ -59,9 +59,9 @@ public class Game {
     }
 
     private boolean isBoardFull() {
-        for(int row = 1; row <= 6; row++) {
-            for(int col = 1; col <= 7; col++) {
-                if(board[row][col] == null) {
+        for (int row = 1; row <= 6; row++) {
+            for (int col = 1; col <= 7; col++) {
+                if (board[row][col] == null) {
                     return false;
                 }
             }
@@ -71,22 +71,22 @@ public class Game {
 
     private boolean hasWinner() {
 
-        for(int row = 1; row <= 6; row++) {
-            for(int col = 1; col <=7; col++) {
-                if(board[row][col] != null) {
-                    if(col + 3 <= 7) {
-                        if(board[row][col + 1] != null && board[row][col + 2] != null &&  board[row][col + 3] != null) {
-                            if(board[row][col].getPlayer() == board[row][col + 1].getPlayer() &&
+        for (int row = 1; row <= 6; row++) {
+            for (int col = 1; col <= 7; col++) {
+                if (board[row][col] != null) {
+                    if (col + 3 <= 7) {
+                        if (board[row][col + 1] != null && board[row][col + 2] != null && board[row][col + 3] != null) {
+                            if (board[row][col].getPlayer() == board[row][col + 1].getPlayer() &&
                                     board[row][col].getPlayer() == board[row][col + 2].getPlayer() &&
-                                    board[row][col].getPlayer() == board[row][col + 3].getPlayer()){
+                                    board[row][col].getPlayer() == board[row][col + 3].getPlayer()) {
                                 setWinnerPlayer(board[row][col].getPlayer());
                                 setWinnerDiscs(board[row][col], board[row][col + 1], board[row][col + 2], board[row][col + 3]);
                                 return true;
                             }
                         }
                     }
-                    if(row + 3 <= 6) {
-                        if(board[row + 1][col] != null && board[row + 2][col] != null &&  board[row + 3][col] != null) {
+                    if (row + 3 <= 6) {
+                        if (board[row + 1][col] != null && board[row + 2][col] != null && board[row + 3][col] != null) {
                             if (board[row][col].getPlayer() == board[row + 1][col].getPlayer() &&
                                     board[row][col].getPlayer() == board[row + 2][col].getPlayer() &&
                                     board[row][col].getPlayer() == board[row + 3][col].getPlayer()) {
@@ -96,8 +96,8 @@ public class Game {
                             }
                         }
                     }
-                    if(col + 3 <= 7 && row + 3 <= 6) {
-                        if(board[row + 1][col + 1] != null && board[row + 2][col + 2] != null &&  board[row + 3][col + 3] != null) {
+                    if (col + 3 <= 7 && row + 3 <= 6) {
+                        if (board[row + 1][col + 1] != null && board[row + 2][col + 2] != null && board[row + 3][col + 3] != null) {
                             if (board[row][col].getPlayer() == board[row + 1][col + 1].getPlayer() &&
                                     board[row][col].getPlayer() == board[row + 2][col + 2].getPlayer() &&
                                     board[row][col].getPlayer() == board[row + 3][col + 3].getPlayer()) {
@@ -107,8 +107,8 @@ public class Game {
                             }
                         }
                     }
-                    if(col + 3 <= 7 && row - 3 >= 1) {
-                        if(board[row - 1][col + 1] != null && board[row - 2][col + 2] != null &&  board[row - 3][col + 3] != null) {
+                    if (col + 3 <= 7 && row - 3 >= 1) {
+                        if (board[row - 1][col + 1] != null && board[row - 2][col + 2] != null && board[row - 3][col + 3] != null) {
                             if (board[row][col].getPlayer() == board[row - 1][col + 1].getPlayer() &&
                                     board[row][col].getPlayer() == board[row - 2][col + 2].getPlayer() &&
                                     board[row][col].getPlayer() == board[row - 3][col + 3].getPlayer()) {
@@ -162,7 +162,6 @@ public class Game {
     private void notifyGameFinished() {
         listener.gameFinished(winnerPlayer, winnerDiscs);
     }
-
 
 
 }

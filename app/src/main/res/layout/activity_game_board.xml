@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:layout_above="@id/board_image_view">
 
-            <com.lag.connectfour.util.BungeeTextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/player_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -78,7 +78,7 @@
             android:gravity="center"
             android:visibility="invisible">
 
-            <com.lag.connectfour.util.BungeeTextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/new_game_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true">
 
-            <com.lag.connectfour.util.BungeeTextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/menu_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
                 android:textSize="40sp"
                 android:text="@string/game_paused"/>
 
-            <com.lag.connectfour.util.BungeeTextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/menu_new_game_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
                 android:textSize="30sp"
                 android:text="@string/new_game"/>
 
-            <com.lag.connectfour.util.BungeeTextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/menu_exit_game_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

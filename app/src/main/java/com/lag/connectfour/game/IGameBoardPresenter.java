@@ -1,6 +1,6 @@
 package com.lag.connectfour.game;
 
-public interface IGameBoardPresenter{
+public interface IGameBoardPresenter {
 
     void onViewAttached(IGameBoardView view);
 

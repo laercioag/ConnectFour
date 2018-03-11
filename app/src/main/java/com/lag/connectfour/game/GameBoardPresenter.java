@@ -1,7 +1,5 @@
 package com.lag.connectfour.game;
 
-import android.util.Log;
-
 import com.lag.connectfour.data.Disc;
 import com.lag.connectfour.data.Game;
 import com.lag.connectfour.data.Player;
@@ -13,7 +11,7 @@ public class GameBoardPresenter implements IGameBoardPresenter, IGameListener {
     private IGameBoardView view;
     private Game game;
 
-    public GameBoardPresenter() {
+    GameBoardPresenter() {
         newGame();
     }
 
@@ -48,8 +46,8 @@ public class GameBoardPresenter implements IGameBoardPresenter, IGameListener {
 
     @Override
     public void playerMove(Disc disc) {
-        if(view != null) {
-            if(disc.getPlayer() == Player.PLAYER_ONE) {
+        if (view != null) {
+            if (disc.getPlayer() == Player.PLAYER_ONE) {
                 view.drawDiscPlayerOne(disc.getColumn(), disc.getRow());
             } else {
                 view.drawDiscPlayerTwo(disc.getColumn(), disc.getRow());
@@ -59,8 +57,8 @@ public class GameBoardPresenter implements IGameBoardPresenter, IGameListener {
 
     @Override
     public void setRoundPlayer(Player player) {
-        if(view != null) {
-            if(player == Player.PLAYER_ONE) {
+        if (view != null) {
+            if (player == Player.PLAYER_ONE) {
                 view.setRoundPlayerOne();
             } else {
                 view.setRoundPlayerTwo();
@@ -70,15 +68,15 @@ public class GameBoardPresenter implements IGameBoardPresenter, IGameListener {
 
     @Override
     public void gameFinished(Player player, List<Disc> winnerDiscs) {
-        if(view != null) {
-            if(player == null) {
+        if (view != null) {
+            if (player == null) {
                 view.setWinnerDraw();
                 return;
             }
-            for(Disc disc : winnerDiscs) {
-                view.highlightDisc(disc.getColumn(),disc.getRow());
+            for (Disc disc : winnerDiscs) {
+                view.highlightDisc(disc.getColumn(), disc.getRow());
             }
-            if(player == Player.PLAYER_ONE) {
+            if (player == Player.PLAYER_ONE) {
                 view.setWinnerPlayerOne();
             } else {
                 view.setWinnerPlayerTwo();
@@ -89,10 +87,9 @@ public class GameBoardPresenter implements IGameBoardPresenter, IGameListener {
     // This method probably brakes the concept of MVP
     @Override
     public void redraw() {
-        Log.e("Presenter.redraw: ", "Redraw function called");
         for (int row = 1; row <= 6; row++) {
             for (int col = 1; col <= 7; col++) {
-                if(game.board[row][col]!=null) {
+                if (game.board[row][col] != null) {
                     if (game.board[row][col].getPlayer() == Player.PLAYER_ONE) {
                         view.redrawDiscPlayerOne(col, row);
                     } else if (game.board[row][col].getPlayer() == Player.PLAYER_TWO) {

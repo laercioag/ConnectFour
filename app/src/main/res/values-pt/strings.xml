@@ -10,7 +10,7 @@
     <string name="player_one_won">Jogador Um Venceu</string>
     <string name="player_two_won">Jogador Dois Venceu</string>
     <string name="draw">Empate</string>
-    <string name="game_board">Game Board</string>
+    <string name="game_board">Tabuleiro</string>
     <string name="pause">Pausar</string>
     <string name="game_paused">Jogo Pausado</string>
     <string name="close">Fechar</string>

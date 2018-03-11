@@ -11,7 +11,7 @@
     android:background="@color/backgroundColor"
     tools:context="com.lag.connectfour.launcher.LauncherActivity">
 
-    <com.lag.connectfour.util.BungeeTextView
+    <android.support.v7.widget.AppCompatTextView
         android:id="@+id/app_name_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
         android:contentDescription="@string/start_game"
         />
 
-    <com.lag.connectfour.util.BungeeTextView
+    <android.support.v7.widget.AppCompatTextView
         android:id="@+id/start_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,6 +55,7 @@
         android:shadowDy="5"
         android:shadowRadius="5"
         android:textSize="40sp"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:focusable="true"/>
 
 </RelativeLayout>
